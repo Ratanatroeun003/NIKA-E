@@ -10,7 +10,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   return (
-    <div className="max-w-7xl flex items-center justify-center px-4 md:px-16 py-2 mx-auto gap-6">
+    <div className="max-w-7xl flex items-center justify-center px-4 md:px-16 py-2 mx-auto gap-6 mb-4">
       {/* logo */}
       <div className="mr-4">
         <img
