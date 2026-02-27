@@ -1,6 +1,7 @@
 import home from '../assets/home.png';
 import Feature from '../Layout/Feature';
 import logoW from '../assets/logoW.png';
+import Latest from '../Layout/Latest';
 const Home = () => {
   return (
     <div>
@@ -16,6 +17,7 @@ const Home = () => {
           <img src={logoW} alt="LogoW" className="object-cover" />
         </a>
       </div>
+      <Latest />
     </div>
   );
 };
