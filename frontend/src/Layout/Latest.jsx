@@ -94,7 +94,7 @@ const Latest = () => {
                 className="w-full h-32 object-contain rounded-md mb-2 group-hover:scale-110 transition-transform"
               />
               <p className="text-center font-medium text-gray-700">
-                dcs:{item.description}
+                {item.description}
               </p>
               <p className="text-center text-green-600 font-bold">
                 price: ${item.price}.00

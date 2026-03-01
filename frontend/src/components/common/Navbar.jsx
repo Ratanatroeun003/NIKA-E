@@ -1,4 +1,4 @@
-import NikaLogo from '../../assets/NikaLogo.png';
+import TT from '../../assets/TT-E.png';
 import { IoSearchOutline, IoCloseOutline } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
@@ -14,7 +14,7 @@ const Navbar = () => {
       {/* logo */}
       <div className="mr-4">
         <img
-          src={NikaLogo}
+          src={TT}
           alt="logo"
           className="w-24 cursor-pointer"
           onClick={() => navigate('/')}
