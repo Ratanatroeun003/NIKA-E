@@ -1,7 +1,7 @@
 import home from '../assets/home.png';
-import Feature from '../Layout/Feature';
-import logoW from '../assets/logoW.png';
-import Latest from '../Layout/Latest';
+import BestSeller from '../components/layouts/BestSeller';
+import Feature from '../components/layouts/Feature';
+import Latest from '../components/layouts/Latest';
 const Home = () => {
   return (
     <div>
@@ -11,12 +11,7 @@ const Home = () => {
         </a>
       </div>
       <Feature />
-      <div className="w-3/4 mx-auto mb-4">
-        <a href="">
-          {' '}
-          <img src={logoW} alt="LogoW" className="object-cover" />
-        </a>
-      </div>
+      <BestSeller />
       <Latest />
     </div>
   );

@@ -7,7 +7,7 @@ const TopBar = () => {
           <span className="text-xs">
             <FaPhone />
           </span>
-          <span className="font-medium"> (+855) 17935151</span>
+          <span className="font-medium"> (+855) 71 4407 205</span>
         </a>
       </div>
       <div className="flex items-center gap-6">

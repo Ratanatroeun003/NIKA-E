@@ -1,22 +1,31 @@
 import TT from '../../assets/TT-E.png';
-import { IoSearchOutline, IoCloseOutline } from 'react-icons/io5';
+import {
+  IoSearchOutline,
+  IoSettingsOutline,
+  IoCloseOutline,
+} from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import { FaCartShopping } from 'react-icons/fa6';
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useUser } from '../../context/UserContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { state, dispatch } = useUser();
+  const handleLogout = () => {
+    dispatch({ type: 'LOG_OUT' });
+    navigate('/profile');
+  };
   return (
     <div className="max-w-7xl flex items-center justify-center px-4 md:px-16 py-2 mx-auto gap-6 mb-4">
       {/* logo */}
-      <div className="mr-4">
+      <div className="mr-4 w-24 p-4">
         <img
           src={TT}
           alt="logo"
-          className="w-24 cursor-pointer"
+          className=" w-full cursor-pointer"
           onClick={() => navigate('/')}
         />
       </div>
@@ -36,6 +45,25 @@ const Navbar = () => {
           </button>
         </div>
       </div>
+      {state.isAuthenticated && state.role === 'admin' && (
+        <Link
+          to="/admin"
+          className="flex flex-col items-center text-orange-500 hover:text-orange-600 transition-colors"
+          title="Admin Panel"
+        >
+          <IoSettingsOutline className="text-2xl md:text-3xl animate-spin-slow" />
+          <span className="text-[10px] font-bold">Admin</span>
+        </Link>
+      )}
+      {state.isAuthenticated && (
+        <button
+          onClick={handleLogout}
+          className="btn btn-xs btn-warning"
+          title="Logout"
+        >
+          Logout
+        </button>
+      )}
       {/* mobile search icon */}
       <div className="sm:hidden">
         <IoSearchOutline

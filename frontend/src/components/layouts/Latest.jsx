@@ -1,4 +1,4 @@
-import recomm from '../assets/recomm.png';
+import recomm from '../../assets/recomm.png';
 import productService from '../../service/productService';
 import {
   productInitialState,
@@ -82,7 +82,6 @@ const Latest = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-6">
-          {/* បញ្ជាក់៖ ត្រង់នេះអ្នកអាចទាញទិន្នន័យពី state.products បន្ថែមទៀតបាន */}
           {latestProduct.map((item) => (
             <div
               key={item._id}
