@@ -10,13 +10,25 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
+// ✅ User avatar storage
+const userStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'TT-NA',
+    folder: 'TT-NA/users',
     allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
     transformation: [{ width: 500, height: 500, crop: 'limit' }],
   },
 });
 
-export const upload = multer({ storage: storage });
+// ✅ Product image storage
+const productStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'TT-NA/products',
+    allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
+    transformation: [{ width: 800, height: 800, crop: 'limit' }],
+  },
+});
+
+export const upload = multer({ storage: userStorage }); // ← user avatar
+export const uploadProduct = multer({ storage: productStorage }); // ← product image

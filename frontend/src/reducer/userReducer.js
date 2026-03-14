@@ -16,7 +16,7 @@ export const initializer = () => {
         ...userInitialState,
         isAuthenticated: !!parsedData.token,
         role: parsedData.role || null,
-        user: parsedData.user || null,
+        // ❌ លុប user — ហៅ getProfile API វិញ
       };
     }
   } catch {
@@ -37,12 +37,12 @@ export const userReducer = (state, action) => {
 
     case 'LOGIN_SUCCESS':
     case 'REGISTER_SUCCESS':
+      // ✅ token + role តែប៉ុណ្ណោះ
       localStorage.setItem(
         'user',
         JSON.stringify({
           token: action.payload.token,
           role: action.payload.role,
-          user: action.payload.user,
         }),
       );
       return {
@@ -54,21 +54,16 @@ export const userReducer = (state, action) => {
         user: action.payload.user,
       };
 
-    // ✅ wrap {} ដើម្បីប្រើ const
-    case 'UPDATE_SUCCESS': {
-      try {
-        const saved = JSON.parse(localStorage.getItem('user')) || {};
-        localStorage.setItem(
-          'user',
-          JSON.stringify({
-            ...saved,
-            user: action.payload, // ✅ update user
-          }),
-        );
-      } catch {
-        // បើ localStorage fail — មិន crash
-        console.error('localStorage update failed');
-      }
+    // ✅ READ — fetch profile (មិន update localStorage)
+    case 'SET_USER':
+      return {
+        ...state,
+        isLoading: false,
+        user: action.payload,
+      };
+
+    // ✅ WRITE — បន្ទាប់ពី edit (មិន update localStorage ព្រោះ token មិនផ្លាស់ប្តូរ)
+    case 'UPDATE_SUCCESS':
       return {
         ...state,
         isLoading: false,
@@ -76,7 +71,6 @@ export const userReducer = (state, action) => {
         user: action.payload,
         isAuthenticated: true,
       };
-    }
 
     case 'LOG_OUT':
       localStorage.removeItem('user');

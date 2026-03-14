@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useAdmin } from '../context/adminContext';
 import adminService from '../service/adminService';
+import { Link } from 'react-router-dom';
 
 const AdminDashboard = () => {
   const { state, dispatch } = useAdmin();
@@ -76,7 +77,7 @@ const AdminDashboard = () => {
               Recent Registrations
             </h3>
             <button className="text-primary text-xs font-bold hover:underline">
-              View All
+              <Link to="/admin/usersList">View All</Link>
             </button>
           </div>
           <div className="overflow-x-auto">

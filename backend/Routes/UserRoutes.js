@@ -1,6 +1,7 @@
 import express from 'express';
 import {
-  GetProfile,
+  getProfile,
+  getUserById,
   LoginUser,
   RegisterUser,
   UpdateUser,
@@ -11,6 +12,7 @@ const router = express.Router();
 
 router.post('/RegisterUser', upload.single('avatar'), RegisterUser);
 router.post('/LoginUser', LoginUser);
-router.get('/get-profile', verifyToken, GetProfile);
+router.get('/get-profile', verifyToken, getProfile);
+router.get('/getUserById/:id', getUserById);
 router.put('/update-user', verifyToken, upload.single('avatar'), UpdateUser);
 export { router as UserRoute };

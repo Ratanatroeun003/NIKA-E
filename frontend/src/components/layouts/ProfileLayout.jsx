@@ -15,7 +15,7 @@ const ProfileLayout = ({ user, handleLogout }) => {
                   'https://cdn-icons-png.flaticon.com/512/149/149071.png'
                 }
                 alt="avatar"
-                className="object-cover w-full h-full" // ✅ បន្ថែម object-cover
+                className="object-cover w-full h-full"
               />
             </div>
           </div>

@@ -51,6 +51,10 @@ const userService = {
     const response = await API.get('/get-profile');
     return response.data;
   },
+  getUserById: async (id) => {
+    const response = await API.get(`/getUserById/${id}`);
+    return response.data;
+  },
   updateProfile: async (userData) => {
     const response = await API.put('/update-user', userData, {
       headers: {

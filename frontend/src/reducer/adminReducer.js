@@ -29,29 +29,51 @@ export const adminReducer = (state, action) => {
         ...state,
         isLoading: false,
         success: true,
-        users: state.users.filter(
-          (user) => user._id !== action.payload, // ✅ លុបចេញពី list
-        ),
+        users: state.users.filter((user) => user._id !== action.payload),
       };
 
-    case 'UPDATE_USER_ROLE':
+    case 'UPDATE_USER': // ✅ កែពី UPDATE_USER_ROLE
       return {
         ...state,
         isLoading: false,
         success: true,
         users: state.users.map((user) =>
-          user._id === action.payload._id
-            ? action.payload // ✅ replace user ថ្មី
-            : user,
+          user._id === action.payload._id ? action.payload : user,
         ),
       };
 
-    // ===== PRODUCTS =====
+    // ===== PRODUCTS ===== ✅
     case 'GET_ALL_PRODUCTS':
       return {
         ...state,
         isLoading: false,
         products: action.payload,
+      };
+
+    case 'DELETE_PRODUCT':
+      return {
+        ...state,
+        isLoading: false,
+        success: true,
+        products: state.products.filter((p) => p._id !== action.payload),
+      };
+
+    case 'ADD_PRODUCT':
+      return {
+        ...state,
+        isLoading: false,
+        success: true,
+        products: [action.payload, ...state.products], // ✅ បន្ថែមមុន
+      };
+
+    case 'UPDATE_PRODUCT':
+      return {
+        ...state,
+        isLoading: false,
+        success: true,
+        products: state.products.map((p) =>
+          p._id === action.payload._id ? action.payload : p,
+        ),
       };
 
     // ===== ERROR =====

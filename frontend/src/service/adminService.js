@@ -33,20 +33,44 @@ const adminService = {
     const response = await API.get('/getAll');
     return response.data;
   },
-
   deleteUser: async (id) => {
-    const response = await API.delete(`/users/${id}`);
+    const response = await API.delete(`/delete/${id}`);
+    return response.data;
+  },
+  getAuditLogs: async (userId) => {
+    const response = await API.get(`/audit-logs/${userId}`);
     return response.data;
   },
 
   updateUserRole: async (id, role) => {
-    const response = await API.put(`/users/${id}/role`, { role });
+    const response = await API.put(`/updateUserRole/${id}/role`, { role });
+    return response.data;
+  },
+  getAllProducts: async () => {
+    const response = await API.get('/getAllProduct');
+    return response.data;
+  },
+  deleteProduct: async (id) => {
+    const response = await API.delete(`/deleteProduct/${id}`);
+    return response.data;
+  },
+  getProductById: async (id) => {
+    const response = await API.get(`/getProductById/${id}`);
     return response.data;
   },
 
-  // Products
-  getAllProducts: async () => {
-    const response = await API.get('/products');
+  updateProduct: async (id, data) => {
+    const response = await API.put(`/updateProduct/${id}`, data, {
+      headers: { 'Content-Type': 'application/json' }, // ✅ JSON
+    });
+    return response.data;
+  },
+
+  // ✅ upload image ដាច់ស្រឡះ
+  uploadProductImage: async (formData) => {
+    const response = await API.post('/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return response.data;
   },
 };

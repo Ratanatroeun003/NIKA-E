@@ -7,6 +7,7 @@ const EditProfile = () => {
   const nav = useNavigate();
   const { state, dispatch } = useUser();
   const user = state.user;
+
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
@@ -19,8 +20,27 @@ const EditProfile = () => {
     password: '',
   });
   const [avatar, setAvatar] = useState(null);
-  const [preview, setPreview] = useState(user?.avatar || '');
+  const [preview, setPreview] = useState('');
 
+  // ✅ ហៅ API រាល់ mount
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        if (state.isAuthenticated) {
+          const data = await userService.getProfile();
+          dispatch({ type: 'SET_USER', payload: data.data });
+        }
+      } catch (error) {
+        if (error.response?.status === 401) {
+          dispatch({ type: 'LOG_OUT' });
+          nav('/profile');
+        }
+      }
+    };
+    fetchProfile();
+  }, []);
+
+  // ✅ fill form នៅពេល user មាន
   useEffect(() => {
     if (user) {
       setFormData({
@@ -34,7 +54,7 @@ const EditProfile = () => {
       });
       setPreview(user.avatar || '');
     }
-  }, [user]);
+  }, [user]); // ✅ run នៅពេល user ផ្លាស់ប្តូរ
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -51,7 +71,7 @@ const EditProfile = () => {
   const handleSubmit = async () => {
     try {
       dispatch({ type: 'USER_REQUEST' });
-      setSuccess(false); // ✅ reset មុន submit
+      setSuccess(false);
       setError('');
 
       const data = new FormData();
@@ -61,23 +81,32 @@ const EditProfile = () => {
       if (avatar) data.append('avatar', avatar);
 
       const response = await userService.updateProfile(data);
-      console.log('response:', response); // ← មើល structure
-      console.log('response.data:', response.data);
-      console.log('response.data.data:', response.data.data); // ← user object?
-      dispatch({ type: 'UPDATE_SUCCESS', payload: response.data });
+      dispatch({ type: 'UPDATE_SUCCESS', payload: response.data }); // ✅
 
-      setSuccess(true); // ✅ local success
+      setSuccess(true);
       setTimeout(() => nav('/profile'), 1000);
     } catch (err) {
-      setError(err.message || 'Update failed!');
+      setError(err.response?.data?.message || 'Update failed!'); // ✅ axios error
+      dispatch({
+        type: 'USER_FAIL',
+        payload: { message: err.response?.data?.message },
+      });
     }
   };
+
+  // ✅ loading នៅពេល user មិនទាន់ load
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-base-200 flex items-center justify-center py-10">
       <div className="card w-full max-w-2xl bg-base-100 shadow-xl">
         <div className="card-body">
-          {/* Title */}
           <h2 className="card-title text-2xl font-bold justify-center mb-4">
             Edit Profile
           </h2>
@@ -106,9 +135,7 @@ const EditProfile = () => {
             </label>
           </div>
 
-          {/* Form */}
           <div className="flex flex-col gap-4">
-            {/* First Name + Last Name */}
             <div className="grid grid-cols-2 gap-4">
               <div className="form-control">
                 <label className="label">
@@ -136,7 +163,6 @@ const EditProfile = () => {
               </div>
             </div>
 
-            {/* Email */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -151,7 +177,6 @@ const EditProfile = () => {
               />
             </div>
 
-            {/* Phone */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Phone</span>
@@ -165,7 +190,6 @@ const EditProfile = () => {
               />
             </div>
 
-            {/* Address */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Address</span>
@@ -179,7 +203,6 @@ const EditProfile = () => {
               />
             </div>
 
-            {/* Gender */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Gender</span>
@@ -196,7 +219,6 @@ const EditProfile = () => {
               </select>
             </div>
 
-            {/* Password */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">New Password</span>
@@ -212,21 +234,17 @@ const EditProfile = () => {
               />
             </div>
 
-            {/* ✅ ប្រើ local error — មិនមែន state.error */}
             {error && (
               <div className="alert alert-error">
                 <span>{error}</span>
               </div>
             )}
-
-            {/* ✅ ប្រើ local success */}
             {success && (
               <div className="alert alert-success">
                 <span>Updated successfully! ✅</span>
               </div>
             )}
 
-            {/* Buttons */}
             <div className="flex justify-end gap-3 mt-2">
               <button className="btn btn-ghost" onClick={() => nav('/profile')}>
                 Cancel

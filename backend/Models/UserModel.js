@@ -48,6 +48,15 @@ const userSchema = new mongoose.Schema(
       enum: ['user', 'admin'],
       default: 'user',
     },
+    changedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
+    changedAt: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true },
 );

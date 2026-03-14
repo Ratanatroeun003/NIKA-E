@@ -1,28 +1,26 @@
 import { useEffect, useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'; // 👈 ប្តូរពី Link មក NavLink
 import { useUser } from '../../context/UserContext';
+import userService from '../../service/userService';
 
 const AdminLayout = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { state, dispatch } = useUser();
-  // useEffect(() => {
-  //   const fetchProfile = async () => {
-  //     try {
-  //       if (state.isAuthenticated && !state.user) {
-  //         // ✅ ហៅតែពេល user = null
-  //         const data = await userService.getProfile();
-  //         dispatch({ type: 'SET_USER', payload: data.data });
-  //       }
-  //     } catch (error) {
-  //       if (error.status === 401) {
-  //         dispatch({ type: 'LOG_OUT' });
-  //         navigate('/profile');
-  //       }
-  //     }
-  //   };
-  //   fetchProfile();
-  // }, []);
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await userService.getProfile();
+        dispatch({ type: 'SET_USER', payload: data.data });
+      } catch (error) {
+        if (error.status === 401) {
+          dispatch({ type: 'LOG_OUT' });
+          navigate('/profile');
+        }
+      }
+    };
+    fetchProfile();
+  }, []);
   const handleLogout = () => {
     dispatch({ type: 'LOG_OUT' });
     navigate('/profile');

@@ -7,6 +7,9 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminLayout from './components/layouts/AdminLayout';
 import AdminRoute from './components/layouts/AdminRoute';
 import UserList from './pages/UserList';
+import AdminEdit from './components/layouts/AdminEdit';
+import AdminProduct from './pages/AdminProduct';
+import AdminEditProduct from './pages/AdminEditProduct';
 const App = () => {
   return (
     <BrowserRouter>
@@ -29,6 +32,9 @@ const App = () => {
         >
           <Route index element={<AdminDashboard />} />
           <Route path="usersList" element={<UserList />} />
+          <Route path="editUser/:id" element={<AdminEdit />} />
+          <Route path="products" element={<AdminProduct />} />
+          <Route path="updateProduct/:id" element={<AdminEditProduct />} />
         </Route>
       </Routes>
     </BrowserRouter>

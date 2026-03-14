@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useAdmin } from '../context/adminContext';
 import adminService from '../service/adminService';
+import { useNavigate } from 'react-router-dom';
 
 const UserList = () => {
   const { state, dispatch } = useAdmin();
   const [search, setSearch] = useState('');
-
+  const nav = useNavigate();
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -18,7 +19,18 @@ const UserList = () => {
     };
     fetchUsers();
   }, []);
-
+  const handleDelete = async (id) => {
+    if (window.confirm('តើអ្នកប្រាកដថាចង់លុប User នេះមែនទេ?')) {
+      try {
+        await adminService.deleteUser(id);
+        dispatch({ type: 'DELETE_USER', payload: id }); // ✅
+        setSuccessMsg('លុបបានជោគជ័យ!');
+        setTimeout(() => setSuccessMsg(''), 3000);
+      } catch (error) {
+        dispatch({ type: 'ADMIN_FAIL', payload: error.message });
+      }
+    }
+  };
   //   ✅ Filter by search
   const filteredUsers = state.users?.filter((user) =>
     `${user.fname} ${user.lname} ${user.email}`
@@ -45,7 +57,7 @@ const UserList = () => {
       </div>
 
       {/* Search */}
-      <div className="flex gap-3">
+      <div className="flex gap-3 justify-between">
         <input
           type="text"
           placeholder="Search by name or email..."
@@ -173,6 +185,12 @@ const UserList = () => {
                           onClick={() => handleDelete(user._id)}
                         >
                           Delete
+                        </button>
+                        <button
+                          className="btn btn-xs btn-success btn-outline"
+                          onClick={() => nav(`/admin/editUser/${user._id}`)}
+                        >
+                          Edit
                         </button>
                       </div>
                     </td>
